@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Определение математических функций
 def sinusoid(x):
     return np.sin(x)
 
@@ -56,10 +55,8 @@ def plot_cross_correlation(x, y1, y2, label, title):
     plt.title(title)
 
 if __name__ == "__main__":
-    # Создание массива значений x
     x = np.linspace(-5, 5, 100)
 
-    # Построение графиков функций
     plt.figure(figsize=(12, 8))
 
     plt.subplot(3, 2, 1)
