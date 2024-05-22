@@ -54,24 +54,20 @@ def evaluate_taylor_series(coeffs, point, x_values):
     return np.array(taylor_values)
 
 if __name__ == "__main__":
-    # Исходная функция
     x = sp.symbols('x')
     func = sp.exp(x)
-    expansion_point = 0  # Точка разложения
-    n_terms_values = [3, 5, 10, 25, 50]  # Количество членов в ряде Тейлора
+    expansion_point = 0
+    n_terms_values = [3, 5, 10, 25, 50]
 
-    # Расчет и вывод коэффициентов ряда Тейлора
     for n_terms in n_terms_values:
         taylor_coeffs = calculate_taylor_coefficients(func, expansion_point, n_terms)
         print(f"Для n={n_terms}:")
         print_taylor_coefficients(taylor_coeffs)
         print()
 
-    # Зададим интервал значений x для построения графика
-    x_values = np.linspace(-2, 2, 100)
+    x_values = np.linspace(-5, 5, 100)
     y_analytical = np.exp(x_values)
 
-    # Построение графика
     plt.figure(figsize=(10, 6))
     plt.plot(x_values, y_analytical, label='Аналитическое решение')
 
