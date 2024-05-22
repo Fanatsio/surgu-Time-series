@@ -14,29 +14,37 @@ def step_signal(x):
     """
     return np.where((0 <= x) & (x < 1), 1, 0)
 
-def convolution_plot(x, f, g):
+def convolution(f, g):
     """
-    Построение графика свертки двух сигналов.
+    Реализация свёртки двух функций.
 
     Parameters:
-    x (ndarray): Массив значений x.
     f (ndarray): Первый сигнал.
     g (ndarray): Второй сигнал.
 
     Returns:
-    None
+    ndarray: Результат свёртки f и g.
     """
     conv_result = convolve(f, g, mode='full')
+    return conv_result
+
+if __name__ == "__main__":
+    x = np.arange(-2, 5, 0.01)
+
+    f_signal = step_signal(x)
+    g_signal = step_signal(x)
+
+    conv_result = convolution(f_signal, g_signal)
     
     plt.figure(figsize=(10, 5))
 
     plt.subplot(3, 1, 1)
-    plt.plot(x, f, 'b', label='f(x)')
+    plt.plot(x, f_signal, 'b', label='f(x)')
     plt.legend()
     plt.grid(True)
 
     plt.subplot(3, 1, 2)
-    plt.plot(x, g, 'g', label='g(x)')
+    plt.plot(x, g_signal, 'g', label='g(x)')
     plt.legend()
     plt.grid(True)
 
@@ -47,14 +55,3 @@ def convolution_plot(x, f, g):
 
     plt.tight_layout()
     plt.show()
-
-if __name__ == "__main__":
-    # Задание диапазона x
-    x = np.arange(-2, 5, 0.01)
-
-    # Генерация ступенчатых сигналов
-    f_signal = step_signal(x)
-    g_signal = step_signal(x)
-
-    # Построение графика свертки сигналов
-    convolution_plot(x, f_signal, g_signal)

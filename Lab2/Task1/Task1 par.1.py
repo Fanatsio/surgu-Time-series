@@ -1,27 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def f(x):
+def step_signal(x):
     """
-    Определение ступенчатого сигнала f(x).
+    Генерация ступенчатого сигнала.
 
     Parameters:
-    x (ndarray): Входной массив значений.
+    x (ndarray): Массив значений x.
 
     Returns:
-    ndarray: Результат функции f(x).
-    """
-    return np.where((0 <= x) & (x < 1), 1, 0)
-
-def g(x):
-    """
-    Определение ступенчатого сигнала g(x).
-
-    Parameters:
-    x (ndarray): Входной массив значений.
-
-    Returns:
-    ndarray: Результат функции g(x).
+    ndarray: Ступенчатый сигнал.
     """
     return np.where((0 <= x) & (x < 1), 1, 0)
 
@@ -47,26 +35,22 @@ def convolution(f, g):
     return result
 
 if __name__ == "__main__":
-    # Задание диапазона x
     x = np.arange(-2, 5, 0.01)
 
-    # Вычисление значений функций f(x) и g(x)
-    f_values = f(x)
-    g_values = g(x)
+    f_signal = step_signal(x)
+    g_signal = step_signal(x)
 
-    # Вычисление свёртки
-    conv_result = convolution(f_values, g_values)
+    conv_result = convolution(f_signal, g_signal)
 
-    # Построение графиков
     plt.figure(figsize=(10, 5))
 
     plt.subplot(3, 1, 1)
-    plt.plot(x, f_values, 'b', label='f(x)')
+    plt.plot(x, f_signal, 'b', label='f(x)')
     plt.legend()
     plt.grid(True)
 
     plt.subplot(3, 1, 2)
-    plt.plot(x, g_values, 'g', label='g(x)')
+    plt.plot(x, g_signal, 'g', label='g(x)')
     plt.legend()
     plt.grid(True)
 
