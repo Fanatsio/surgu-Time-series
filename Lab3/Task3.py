@@ -1,55 +1,48 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def read_data(file_path, delimiter="\t"):
-    """
-    Чтение данных из файла.
+# Загружаем данные
+df = pd.read_csv("lab3_data4.txt", sep="\t", header=None)
+df.columns = ["Ничего", "Агрессивная", "Белый шум", "Классическая", "Ритмичная"]
 
-    Parameters:
-    file_path (str): Путь к файлу.
-    delimiter (str, optional): Разделитель данных в файле. По умолчанию '\t'.
+# Преобразуем в бинарные данные
+def to_binary(column):
+    return (column < column.mean()).astype(int)
 
-    Returns:
-    DataFrame: Прочитанные данные.
-    """
-    return pd.read_csv(file_path, delimiter=delimiter)
+# Применяем функцию ко всем столбцам и переименовываем новые столбцы
+binary_columns = {col: to_binary(df[col]) for col in df.columns}
+df_binary = pd.DataFrame(binary_columns)
+df_binary.columns = [f"{col}_binary" for col in df.columns]
 
-def convert_to_time_series(data):
-    """
-    Преобразование данных во временной ряд.
+# Ограничиваем датасет (например, первые 100 значений для лучшей визуализации)
+df_cropped = df_binary.iloc[:100]
 
-    Parameters:
-    data (DataFrame): Входные данные.
+# Создаем график
+plt.figure(figsize=(15, 6))  # Увеличим размер для наглядности
 
-    Returns:
-    Series: Временной ряд (среднее значение по строкам).
-    """
-    return data.mean(axis=1)
+# Устанавливаем ширину баров
+bar_width = 0.1
 
-def plot_time_series(time_series):
-    """
-    Визуализация временного ряда.
+# Словарь для цветов и меток
+colors_labels = {
+    "Ничего_binary": ('blue', "Ничего"),
+    "Агрессивная_binary": ('red', "Агрессивная"),
+    "Белый шум_binary": ('green', "Белый шум"),
+    "Классическая_binary": ('purple', "Классическая"),
+    "Ритмичная_binary": ('orange', "Ритмичная"),
+}
 
-    Parameters:
-    time_series (Series): Временной ряд.
+# Рисуем графики для каждого типа музыки
+for column, (color, label) in colors_labels.items():
+    plt.bar(df_cropped.index[df_cropped[column] == 1], [1] * len(df_cropped[df_cropped[column] == 1]), 
+            color=color, width=bar_width, label=label, alpha=0.7)
 
-    Returns:
-    None
-    """
-    plt.figure(figsize=(10, 6))
-    plt.plot(time_series, linestyle='-')
-    plt.title('Изменение сердечного ритма во времени')
-    plt.xlabel('Время')
-    plt.ylabel('Интервал между ударами сердца (мс)')
-    plt.grid(True)
-    plt.show()
-
-if __name__ == "__main__":
-    # Чтение данных из файла
-    data = read_data("lab3_data4.txt")
-
-    # Преобразование данных во временной ряд
-    time_series = convert_to_time_series(data)
-
-    # Визуализация временного ряда
-    plot_time_series(time_series)
+# Добавляем элементы графика
+plt.title("Изменение сердечного ритма под разную музыку", fontsize=16)
+plt.xlabel("Время (мс)", fontsize=14)
+plt.ylabel("Удар (1) / Отсутствие удара (0)", fontsize=14)
+plt.ylim(0, 1.2)  # Устанавливаем пределы оси Y
+plt.xlim(-1, len(df_cropped))  # Устанавливаем пределы оси X
+plt.legend(fontsize=12)
+plt.grid(True)
+plt.show()
