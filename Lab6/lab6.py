@@ -1,12 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Загружаем данные из файла
-data = np.loadtxt("lab5_data4.txt", skiprows=1, delimiter=";", missing_values=' ')
+filename = 'lab5_data4.txt'
+time = []
+channel0 = []
+channel1 = []
 
-# Выделяем каналы
-channel0 = data[:, 1]
-channel1 = data[:, 2]
+with open(filename, 'r') as file:
+    for line in file:
+        parts = line.strip().split(';')
+        time.append(int(parts[0]))
+        channel0.append(float(parts[1]))
+        channel1.append(float(parts[2]))
 
 # Определяем частоты отсечки
 t1 = 50  # Нижняя частота отсечки
