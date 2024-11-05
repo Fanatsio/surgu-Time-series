@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Загрузка данных из файла
 filename = 'lab5_data4.txt'
 time = []
 signal1 = []
